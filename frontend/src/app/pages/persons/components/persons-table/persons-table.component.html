@@ -1,0 +1,165 @@
+@if (personPagination) {
+<mat-table
+  class="max-h-[calc(100vh-272px)] lg:max-h-[calc(100vh-303px)] w-full flex-wrap overflow-auto !bg-white"
+  [dataSource]="dataSource"
+  matSort
+  (matSortChange)="hndOnSortData($event)"
+>
+  @if (displayedColumns.includes("Nicio persoana")) {
+  <ng-container matColumnDef="Nicio persoana">
+    <th mat-header-cell *matHeaderCellDef>Nicio persoana</th>
+  </ng-container>
+  } @else {
+  <!-- Id Column -->
+  <ng-container matColumnDef="id">
+    <mat-header-cell
+      class="!w-20 !flex-none lg:!w-36"
+      *matHeaderCellDef
+      [disabled]="loading"
+      mat-sort-header
+    >
+      Numar curent
+    </mat-header-cell>
+    <mat-cell *matCellDef="let item" class="!w-20 !flex-none lg:!w-36">
+      <span>{{ item?.id }}</span>
+    </mat-cell>
+  </ng-container>
+
+  <!-- Full Name Column -->
+  <ng-container matColumnDef="fullName">
+    <mat-header-cell
+      class="!w-52 !flex-none"
+      *matHeaderCellDef
+      [disabled]="loading"
+      mat-sort-header
+    >
+      Nume / prenume
+    </mat-header-cell>
+    <mat-cell *matCellDef="let item" class="!w-52 !flex-none">
+      <span>{{ item | getPersonFullName }}</span>
+    </mat-cell>
+  </ng-container>
+
+  <!-- CNP Column -->
+  <ng-container matColumnDef="CNP">
+    <mat-header-cell
+      class="!w-32 !flex-none"
+      *matHeaderCellDef
+      [disabled]="loading"
+      mat-sort-header
+    >
+      CNP
+    </mat-header-cell>
+    <mat-cell *matCellDef="let item" class="!w-32 !flex-none">
+      <span>{{ item?.CNP }}</span>
+    </mat-cell>
+  </ng-container>
+
+  <!-- Age Column -->
+  <ng-container matColumnDef="age">
+    <mat-header-cell
+      class="!w-20 !flex-none"
+      *matHeaderCellDef
+      [disabled]="loading"
+      mat-sort-header
+    >
+      Varsta
+    </mat-header-cell>
+    <mat-cell *matCellDef="let item" class="!w-20 !flex-none">
+      <span class="!text-center w-full">{{ item?.age }}</span>
+    </mat-cell>
+  </ng-container>
+
+  <!-- Cars Column -->
+  <ng-container matColumnDef="cars">
+    <mat-header-cell
+      *matHeaderCellDef
+      class="!w-[460px] !flex-none lg:!w-auto lg:!flex-1"
+    >
+      Masini
+    </mat-header-cell>
+    <mat-cell
+      *matCellDef="let item"
+      class="!w-[460px] !flex-none lg:!w-auto lg:!flex-1"
+    >
+      <ul class="list-disc">
+        @if (item?.cars?.length) { @for (car of item.cars; track car.id) {
+        <li>
+          {{
+            (car | getCarBrandModelName) +
+              ", " +
+              "anul " +
+              car.yearOfManufacture +
+              ", " +
+              "capacitate cilindrica " +
+              car.cylindricalCapacity +
+              ", " +
+              "taxa de impozit " +
+              car.taxFee
+          }}
+        </li>
+        } } @else {
+        <li>Fara masina</li>
+        }
+      </ul>
+    </mat-cell>
+  </ng-container>
+
+  <!-- Action Column -->
+  <ng-container matColumnDef="actions">
+    <mat-header-cell *matHeaderCellDef class="!w-32 !flex-none">
+      Actiuni
+    </mat-header-cell>
+    <mat-cell *matCellDef="let item" class="!w-32 !flex-none">
+      <div class="flex-warp flex gap-2">
+        <button
+          class="h-5 w-5"
+          (click)="hndOnClickEditPerson(item)"
+          [disabled]="loading"
+        >
+          <ng-icon
+            class="text-secondary"
+            name="tablerEdit"
+            size="20"
+            strokeWidth="2"
+          ></ng-icon>
+        </button>
+
+        <button
+          class="h-5 w-5"
+          (click)="hndOnClickDeletePerson(item)"
+          [disabled]="loading"
+        >
+          <ng-icon
+            class="text-secondary"
+            name="tablerTrash"
+            size="20"
+            strokeWidth="2"
+          ></ng-icon>
+        </button>
+      </div>
+    </mat-cell>
+  </ng-container>
+  }
+
+  <mat-header-row
+    class="!sticky top-0 z-10 !border !border-b"
+    *matHeaderRowDef="displayedColumns"
+  ></mat-header-row>
+
+  <mat-row
+    class="!border !border-b !text-sm !font-normal !text-secondary transition duration-300 ease-in-out hover:!bg-shade-of-gray"
+    *matRowDef="let row; columns: displayedColumns"
+  ></mat-row>
+</mat-table>
+}
+
+<mat-paginator
+  [pageSize]="pageSize"
+  [pageIndex]="pageIndex"
+  [pageSizeOptions]="pageSizeOptions"
+  [length]="length"
+  [showFirstLastButtons]="showFirstLastButtons"
+  (page)="handlePageChange($event)"
+  [disabled]="loading"
+></mat-paginator>

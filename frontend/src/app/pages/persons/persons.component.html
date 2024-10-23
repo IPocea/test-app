@@ -1,0 +1,46 @@
+<section
+  class="text-secondary w-full h-[calc(100vh-64px)] bg-shade-of-gray lg:h-[calc(100vh-80px)] flex flex-col flex-wrap gap-3 lg:gap-5 py-3 px-6 lg:px-[52px] lg:py-5 bg-primary"
+>
+  <h2 class="text-xl font-semibold text-center">Persoane</h2>
+  <section class="flex flex-row flex-wrap gap-3 lg:gap-5">
+    <ui-mat-search-input
+      class="!w-60"
+      [matFormFieldClassName]="'w-full'"
+      [noMatLabel]="true"
+      [tablerIconNamePrefix]="'tablerSearch'"
+      [clearInputIcon]="true"
+      [placeholder]="'Caută'"
+      (onSearchValueEmit)="hndEmitSearch($event)"
+    ></ui-mat-search-input>
+    <button
+      uiButton
+      class="!w-12"
+      color="primary"
+      shape="rounded"
+      (click)="hndClickGetCarsAndOpenAddModal()"
+      [disabled]="(actionsLoading$ | async) || (carsLoading$ | async)"
+    >
+      <ng-icon
+        class="text-white"
+        name="tablerPlus"
+        size="24"
+        strokeWidth="2"
+      ></ng-icon>
+    </button>
+  </section>
+
+  <app-persons-table
+    class="w-full"
+    [personPagination]="personsPaginationChange$ | async"
+    [loading]="actionsLoading$ | async"
+    (sendFilters)="hndOnFiltersEmitRequestPersons($event)"
+    (onPersonEdit)="hndOnEmitSelectEditPerson($event)"
+    (onPersonDelete)="hndOnEmitDeletePerson($event)"
+  ></app-persons-table>
+
+  @if((carsLoading$ | async) || (deletePersonLoading$ | async)){
+  <ui-spinner
+    class="fixed left-1/2 top-1/2 z-10 z-10 -translate-x-1/2 -translate-y-1/2 transform"
+  ></ui-spinner>
+  }
+</section>

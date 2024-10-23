@@ -1,0 +1,12 @@
+{
+  "name": "test-app",
+  "version": "1.0.0",
+  "description": "",
+  "main": "",
+  "scripts": {
+    "start:api": "cd backend && cd server && nodemon app.js",
+    "start:web": "cd frontend && ng serve -o",
+    "install:api": "cd backend && npm i",
+    "install:web": "cd frontend && npm i"
+  }
+}

@@ -1,0 +1,178 @@
+<article class="flex flex-col relative">
+  <header
+    class="align-center flex w-full items-center cursor-move p-3 lg:p-5 bg-primary"
+    cdkDrag
+    cdkDragRootElement=".cdk-overlay-pane"
+    cdkDragHandle
+  >
+    <h3 class="w-full cursor-move text-center text-lg font-normal text-white">
+      {{ car ? "Editeaza masina" : "Adauga masina" }}
+    </h3>
+  </header>
+
+  <main class="p-3 lg:p-5 flex flex-col gap-3 overflow-auto">
+    <section class="flex flex-wrap flex-row gap-3">
+      <div class="w-full lg:flex-1">
+        <h4 class="mb-1 text-base font-semibold text-secondary">
+          <span> Marca </span>
+        </h4>
+        <mat-form-field appearance="outline" class="w-full" [formGroup]="form">
+          <input
+            matInput
+            type="text"
+            placeholder="Marca"
+            formControlName="brand"
+          />
+
+          @if ( form.get('brand').hasError("required") ) {
+          <mat-error>Marca este obligatoriu</mat-error>
+          } @else if (form.get('brand').hasError("maxlength")) {
+          <mat-error>Marca este preaa lung</mat-error>
+          }
+        </mat-form-field>
+      </div>
+
+      <div class="w-full lg:flex-1">
+        <h4 class="mb-1 text-base font-semibold text-secondary">
+          <span> Model </span>
+        </h4>
+        <mat-form-field appearance="outline" class="w-full" [formGroup]="form">
+          <input
+            matInput
+            type="text"
+            placeholder="Model"
+            formControlName="model"
+          />
+
+          @if ( form.get('model').hasError("required") ) {
+          <mat-error>Modelul este obligatoriu</mat-error>
+          } @else if (form.get('model').hasError("maxlength")) {
+          <mat-error>Modelul este prea lung</mat-error>
+          }
+        </mat-form-field>
+      </div>
+
+      <div class="w-full lg:w-40">
+        <h4 class="mb-1 text-base font-semibold text-secondary">
+          <span> Anul fabricatiei </span>
+        </h4>
+        <mat-form-field appearance="outline" class="w-full" [formGroup]="form">
+          <input
+            matInput
+            type="text"
+            placeholder="Anul"
+            formControlName="yearOfManufacture"
+          />
+
+          @if ( form.get('yearOfManufacture').hasError("required") ) {
+          <mat-error>Anul este obligatoriu</mat-error>
+          } @else if ( form.get('yearOfManufacture').hasError("pattern") ) {
+          <mat-error>Doar cifrele sunt acceptate</mat-error>
+          } @else if (form.get('yearOfManufacture').hasError("maxlength") ||
+          form.get('yearOfManufacture').hasError("minlength") ||
+          form.get('yearOfManufacture').hasError("max")
+          ||form.get('yearOfManufacture').hasError("min") ) {
+          <mat-error>An invalid</mat-error>
+          }
+        </mat-form-field>
+      </div>
+    </section>
+
+    <section class="flex flex-wrap flex-row gap-3">
+      <div class="w-full lg:flex-1">
+        <h4 class="mb-1 text-base font-semibold text-secondary">
+          <span> Capacitatea cilindrica </span>
+        </h4>
+        <mat-form-field appearance="outline" class="w-full" [formGroup]="form">
+          <input
+            matInput
+            type="text"
+            placeholder="Capacitatea cilindrica"
+            formControlName="cylindricalCapacity"
+          />
+
+          @if ( form.get('cylindricalCapacity').hasError("required") ) {
+          <mat-error>Capacitatea este obligatorie</mat-error>
+          } @else if ( form.get('cylindricalCapacity').hasError("pattern") ) {
+          <mat-error>Doar cifrele sunt acceptate</mat-error>
+          } @else if ( form.get('cylindricalCapacity').hasError("maxlength")) {
+          <mat-error>Capacitatea este prea mare</mat-error>
+          }
+        </mat-form-field>
+      </div>
+
+      <div class="w-full lg:w-40">
+        <h4 class="mb-1 text-base font-semibold text-secondary">
+          <span> Taxa de impozit </span>
+        </h4>
+        <mat-form-field appearance="outline" class="w-full" [formGroup]="form">
+          <input
+            matInput
+            type="text"
+            placeholder="Taxa"
+            formControlName="taxFee"
+            readonly="true"
+          />
+
+          @if ( form.get('taxFee').hasError("required") ) {
+          <mat-error>Capacitatea cilindrica este invalida</mat-error>
+          } @else if ( form.get('taxFee').hasError("maxlength")) {
+          <mat-error>Valoare este prea mare</mat-error>
+          }
+        </mat-form-field>
+      </div>
+    </section>
+  </main>
+
+  <footer class="flex gap-3 flex flex-wrap justify-between p-3 lg:p-5">
+    <button
+      shape="rounded"
+      color="white-with-borders"
+      uiButton
+      [matDialogClose]="false"
+    >
+      <ng-icon name="tablerCircleX" size="24" strokeWidth="2"></ng-icon>
+      <span>Anuleaza</span>
+    </button>
+    @if(car) {
+    <button
+      uiButton
+      class="relative"
+      color="primary"
+      shape="rounded"
+      [disabled]="form.invalid"
+      (click)="hndClickEditCar()"
+    >
+      <ng-icon
+        class="text-white"
+        name="tablerEdit"
+        size="24"
+        strokeWidth="2"
+      ></ng-icon>
+      <span>Editeaza</span>
+    </button>
+    } @else {
+    <button
+      uiButton
+      class="relative"
+      color="primary"
+      shape="rounded"
+      [disabled]="form.invalid"
+      (click)="hndClickAddCar()"
+    >
+      <ng-icon
+        class="text-white"
+        name="tablerPlus"
+        size="24"
+        strokeWidth="2"
+      ></ng-icon>
+      <span>Adauga</span>
+    </button>
+    }
+  </footer>
+  @if(actionsLoading$ | async) {
+  <ui-spinner
+    class="absolute left-1/2 top-1/2 z-10 z-10 -translate-x-1/2 -translate-y-1/2 transform"
+  ></ui-spinner>
+  }
+</article>

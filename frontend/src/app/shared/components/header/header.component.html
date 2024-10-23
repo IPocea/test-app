@@ -1,0 +1,21 @@
+<header class="flex flex-wrap gap-3 lg:gap-5 p-3 lg:px-10 lg:py-5 bg-primary">
+  <button
+    uiButton
+    color="primary"
+    class="flex-1 lg:flex-none lg:w-30"
+    [routerLink]="'/' + APP_ROUTES.Persons"
+    [shape]="'rightAngle'"
+  >
+    <a class="text-shade-of-gray" routerLinkActive="!text-white"> Persoane</a>
+  </button>
+
+  <button
+    uiButton
+    color="primary"
+    class="flex-1 lg:flex-none lg:w-30"
+    [routerLink]="'/' + APP_ROUTES.Cars"
+    [shape]="'rightAngle'"
+  >
+    <a class="text-shade-of-gray" routerLinkActive="!text-white"> Masini</a>
+  </button>
+</header>

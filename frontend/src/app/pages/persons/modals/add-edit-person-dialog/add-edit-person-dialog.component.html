@@ -1,0 +1,176 @@
+<article class="flex flex-col relative">
+  <header
+    class="align-center flex w-full items-center cursor-move p-3 lg:p-5 bg-primary"
+    cdkDrag
+    cdkDragRootElement=".cdk-overlay-pane"
+    cdkDragHandle
+  >
+    <h3 class="w-full cursor-move text-center text-lg font-normal text-white">
+      {{ person ? "Editeaza persoana" : "Adauga persoana" }}
+    </h3>
+  </header>
+
+  <main class="p-3 lg:p-5 flex flex-col gap-3 overflow-auto">
+    <section class="flex flex-wrap flex-row gap-3">
+      <div class="w-full lg:flex-1">
+        <h4 class="mb-1 text-base font-semibold text-secondary">
+          <span> Nume </span>
+        </h4>
+        <mat-form-field appearance="outline" class="w-full" [formGroup]="form">
+          <input
+            matInput
+            type="text"
+            placeholder="Nume"
+            formControlName="lastName"
+          />
+
+          @if ( form.get('lastName').hasError("required") ) {
+          <mat-error>Numele este obligatoriu</mat-error>
+          } @else if (form.get('lastName').hasError("maxlength")) {
+          <mat-error>Numele este prea lung</mat-error>
+          } @else if ( form.get('lastName').hasError("pattern") ) {
+          <mat-error>Nu poti avea cifre in nume</mat-error>
+          }
+        </mat-form-field>
+      </div>
+
+      <div class="w-full lg:flex-1">
+        <h4 class="mb-1 text-base font-semibold text-secondary">
+          <span> Prenume </span>
+        </h4>
+        <mat-form-field appearance="outline" class="w-full" [formGroup]="form">
+          <input
+            matInput
+            type="text"
+            placeholder="Prenume"
+            formControlName="firstName"
+          />
+
+          @if ( form.get('firstName').hasError("required") ) {
+          <mat-error>Prenumele este obligatoriu</mat-error>
+          } @else if (form.get('firstName').hasError("maxlength")) {
+          <mat-error>Prenumele este prea lung</mat-error>
+          } @else if ( form.get('firstName').hasError("pattern") ) {
+          <mat-error>Nu poti avea cifre in nume</mat-error>
+          }
+        </mat-form-field>
+      </div>
+    </section>
+
+    <section class="flex flex-wrap flex-row gap-3">
+      <div class="w-full lg:flex-1">
+        <h4 class="mb-1 text-base font-semibold text-secondary">
+          <span> CNP </span>
+        </h4>
+        <mat-form-field appearance="outline" class="w-full" [formGroup]="form">
+          <input matInput type="text" placeholder="CNP" formControlName="CNP" />
+
+          @if ( form.get('CNP').hasError("required") ) {
+          <mat-error>CNP-ul este obligatoriu</mat-error>
+          } @else if ( form.get('CNP').hasError("pattern") ) {
+          <mat-error>Doar cifrele sunt acceptate</mat-error>
+          } @else if (form.get('CNP').hasError("minlength") ||
+          form.get('CNP').hasError("maxlength")) {
+          <mat-error>CNP-ul este format din 13 cifre</mat-error>
+          }
+        </mat-form-field>
+      </div>
+
+      <div class="w-full lg:w-20">
+        <h4 class="mb-1 text-base font-semibold text-secondary">
+          <span> Varsta </span>
+        </h4>
+        <mat-form-field appearance="outline" class="w-full" [formGroup]="form">
+          <input
+            matInput
+            type="text"
+            placeholder="Varsta"
+            formControlName="age"
+            readonly="true"
+          />
+
+          @if ( form.get('age').hasError("required") ) {
+          <mat-error>CNP invalid</mat-error>
+          } @else if ( form.get('age').hasError("maxlength")) {
+          <mat-error>Varsta nu poate depasi 3 cifre</mat-error>
+          }
+        </mat-form-field>
+      </div>
+    </section>
+
+    <section class="flex flex-wrap flex-row gap-3" [formGroup]="form">
+      <div class="w-full lg:flex-1">
+        <h4 class="mb-1 text-base font-semibold text-secondary">
+          <span> Masini </span>
+        </h4>
+        <ng-select
+          #destinationSelect
+          appearance="outline"
+          [multiple]="true"
+          [hideSelected]="true"
+          [closeOnSelect]="false"
+          formControlName="carIds"
+          dropdownPosition="top"
+        >
+          @for (car of cars; track car?.id) {
+          <ng-option [value]="car.id">
+            {{ car | getCarBrandModelName }}
+          </ng-option>
+          }
+        </ng-select>
+      </div>
+    </section>
+  </main>
+
+  <footer class="flex gap-3 flex flex-wrap justify-between p-3 lg:p-5">
+    <button
+      shape="rounded"
+      color="white-with-borders"
+      uiButton
+      [matDialogClose]="false"
+    >
+      <ng-icon name="tablerCircleX" size="24" strokeWidth="2"></ng-icon>
+      <span>Anuleaza</span>
+    </button>
+    @if(person) {
+    <button
+      uiButton
+      class="relative"
+      color="primary"
+      shape="rounded"
+      [disabled]="form.invalid"
+      (click)="hndClickEditPerson()"
+    >
+      <ng-icon
+        class="text-white"
+        name="tablerEdit"
+        size="24"
+        strokeWidth="2"
+      ></ng-icon>
+      <span>Editeaza</span>
+    </button>
+    } @else {
+    <button
+      uiButton
+      class="relative"
+      color="primary"
+      shape="rounded"
+      [disabled]="form.invalid"
+      (click)="hndClickAddPerson()"
+    >
+      <ng-icon
+        class="text-white"
+        name="tablerPlus"
+        size="24"
+        strokeWidth="2"
+      ></ng-icon>
+      <span>Adauga</span>
+    </button>
+    }
+  </footer>
+  @if(actionsLoading$ | async) {
+  <ui-spinner
+    class="absolute left-1/2 top-1/2 z-10 z-10 -translate-x-1/2 -translate-y-1/2 transform"
+  ></ui-spinner>
+  }
+</article>

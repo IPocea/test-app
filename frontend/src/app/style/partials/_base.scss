@@ -1,0 +1,14 @@
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  @apply bg-primary-200 #{!important};
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  /* TO DO add bg */
+  @apply rounded-full bg-primary #{!important};
+}

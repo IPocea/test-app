@@ -1,0 +1,59 @@
+@if (noMatLabel && label) {
+  <h4
+    [class]="
+      noMatLabelClass
+        ? noMatLabelClass
+        : 'mb-1 text-base font-semibold text-secondary'
+    "
+  >
+    <span>{{ label }}</span>
+    @if (labelHint) {
+      <span [ngClass]="labelHintClass ? labelHintClass + ' ml-2' : 'ml-2'">{{
+        labelHint
+      }}</span>
+    }
+  </h4>
+}
+<mat-form-field
+  appearance="outline"
+  [class]="
+    matFormFieldClassName
+      ? matFormFieldClassName + ' mat-form-field-help--hidden'
+      : 'mat-form-field-help--hidden'
+  "
+>
+  @if (!noMatLabel) {
+    <mat-label>{{ label }}</mat-label>
+  }
+
+  @if (tablerIconNamePrefix) {
+    <ng-icon
+      icon
+      matIconPrefix
+      [name]="tablerIconNamePrefix"
+      size="20"
+      strokeWidth="2"
+    >
+    </ng-icon>
+  }
+
+  <input
+    matInput
+    type="text"
+    [placeholder]="placeholder"
+    [formControl]="searchInputCtrl"
+  />
+
+  @if (clearInputIcon && searchInputCtrl.value) {
+    <ng-icon
+      class="cursor-pointer"
+      (click)="hndClickResetSearchInputCtrl()"
+      icon
+      matSuffix
+      name="tablerX"
+      size="20"
+      strokeWidth="2"
+    >
+    </ng-icon>
+  }
+</mat-form-field>

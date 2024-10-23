@@ -1,0 +1,38 @@
+<article class="flex flex-col relative">
+  <header
+    class="align-center flex w-full items-center cursor-move p-3 lg:p-5 bg-primary"
+    cdkDrag
+    cdkDragRootElement=".cdk-overlay-pane"
+    cdkDragHandle
+  >
+    <h3 class="w-full cursor-move text-center text-lg font-normal text-white">
+      {{ title }}
+    </h3>
+  </header>
+
+  <main class="p-3 lg:p-5 flex flex-col gap-3 overflow-auto">
+    <p class="text-md font-normal text-heading">{{ paragraph }}</p>
+  </main>
+
+  <footer class="flex gap-3 flex flex-wrap justify-between p-3 lg:p-5">
+    <button
+      shape="rounded"
+      color="white-with-borders"
+      uiButton
+      [matDialogClose]="false"
+    >
+      <ng-icon name="tablerCircleX" size="24" strokeWidth="2"></ng-icon>
+      <span>Anuleaza</span>
+    </button>
+
+    <button uiButton color="danger" [matDialogClose]="true">
+      <ng-icon
+        class="text-white"
+        name="tablerTrash"
+        size="24"
+        strokeWidth="2"
+      ></ng-icon>
+      <span>Sterge</span>
+    </button>
+  </footer>
+</article>

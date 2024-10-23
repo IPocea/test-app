@@ -1,0 +1,4 @@
+<app-notification
+  *ngFor="let notification of onNotifications$ | async"
+  [data]="notification"
+></app-notification>

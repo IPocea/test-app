@@ -1,0 +1,7 @@
+mat-dialog-container.mat-mdc-dialog-container {
+  div.mat-mdc-dialog-inner-container {
+    div.mat-mdc-dialog-surface {
+      @apply rounded-md #{!important};
+    }
+  }
+}

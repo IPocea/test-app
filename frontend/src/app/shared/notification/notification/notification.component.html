@@ -1,0 +1,50 @@
+<header class="flex items-center justify-between">
+  <div class="flex items-center gap-2">
+    @switch (data?.type) {
+      @case (NOTIFICATION_TYPE.Blank) {
+        <ng-icon
+          class="text-purple"
+          name="tablerInfoHexagon"
+          size="24"
+          strokeWidth="2"
+        ></ng-icon>
+      }
+      @case (NOTIFICATION_TYPE.Error) {
+        <ng-icon
+          class="text-red-500"
+          name="tablerAlertCircle"
+          size="24"
+          strokeWidth="2"
+        ></ng-icon>
+      }
+      @case (NOTIFICATION_TYPE.Success) {
+        <ng-icon
+          class="text-emerald-500"
+          name="tablerCheck"
+          size="24"
+          strokeWidth="2"
+        ></ng-icon>
+      }
+    }
+    <h1 class="font-semibold">{{ data?.title }}</h1>
+  </div>
+  <ng-icon
+    class="text-primary !flex !h-8 !w-8 items-center justify-center rounded active:bg-indigo-50 active:text-indigo-600"
+    name="tablerX"
+    size="20"
+    strokeWidth="2"
+    (click)="hndClose()"
+  ></ng-icon>
+</header>
+@if (data?.message) {
+  <p>{{ data?.message }}</p>
+}
+
+<footer class="absolute bottom-0 left-0 flex h-1 w-full">
+  <div
+    class="bg-primary h-full transition-all ease-linear"
+    [ngStyle]="{
+      width: 100 - ((onTick$ | async) / TIMEOUT) * 10000 + '%',
+    }"
+  ></div>
+</footer>
